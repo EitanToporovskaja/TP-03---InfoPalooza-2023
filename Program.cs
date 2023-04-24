@@ -1,17 +1,17 @@
 ﻿namespace TP_03___INFOPALOOZA_2023;
 class Program
 {
-    static List<Cliente> listaClientes= new List <Cliente>();
+    SortedDictionary<string,int> PlataCurso=new SortedDictionary<string, int>();
     static void Main(string[] args)
     {
       int menu=IngresarEntero("");
         while (menu>4 || menu<0)
         {
-            menu=IngresarEntero("");
+            menu=IngresarEntero("Presione 1 para nueva inscripción. Presione 2 para obtener Estadísticas del Evento. Presione 3 para buscar Cliente. Presione 4 para cambiar entrada de un Cliente. Presione 5 para Salir");
         }
-        while(menu<=4|| menu>0)
+        if (menu==1)
         {
-        
+
         }
 
         else if (menu== 2){
