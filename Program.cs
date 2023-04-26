@@ -4,17 +4,20 @@ class Program
     static SortedDictionary<int,Cliente> Registro =new SortedDictionary<int, Cliente>();
     static void Main(string[] args)
     {
-      int menu=IngresarEntero("");
+        int [] precioDia=  {15000, 30000, 10000, 40000};
+        string frase1= "Ingresar 1 si quiere ir el dia 1, debe pagar"+precioDia[1]+" . Ingresar 2 si quiere ir el dia 2, debe pagar"+precioDia[2]+". Ingresar 3 si quiere ir el dia 3, debe pagar"+precioDia[3]+". Ingresar 4 si quiere ir los 3 dias, debe pagar"+precioDia[4]+".";
+        string frase2="Presione 1 para nueva inscripción. Presione 2 para obtener Estadísticas del Evento. Presione 3 para buscar Cliente. Presione 4 para cambiar entrada de un Cliente. Presione 5 para Salir";
+        int menu=IngresarEntero(frase2);
         while (menu>4 || menu<0)
         {
-            menu=IngresarEntero("Presione 1 para nueva inscripción. Presione 2 para obtener Estadísticas del Evento. Presione 3 para buscar Cliente. Presione 4 para cambiar entrada de un Cliente. Presione 5 para Salir");
+            menu=IngresarEntero(frase2);
         }
-        int tipoentrada=IngresarEntero("Ingresae 1 si quiere ir el dia 1. Ingresar 2 si quiere ir el dia 2. Ingresar 3 si quiere ir el dia 3. Ingresar 4 si quiere ir los 3 dias",4,1);
+        int tipoentrada=IngresarEntero(frase1,4,1);
         int cantClientes=0;
         int reccaudacionTotal=0;
         if (menu==1)
         {
-            Menu1(cantClientes,reccaudacionTotal,tipoentrada);
+            Menu1(cantClientes,reccaudacionTotal,tipoentrada,precioDia);
         }
 
         else if (menu== 2){
@@ -24,7 +27,7 @@ class Program
             Menu3();
         }
         else if (menu== 4){
-            Menu4();
+            Menu4(frase1,frase2,precioDia,menu);
         }
         else if (menu== 5){
             Menu5();  
@@ -57,7 +60,7 @@ class Program
         string palabra;
         return palabra=Console.ReadLine();
     }
-    static void Menu1(int cantClientes, int reccaudacionTotal, int tipoentrada)
+    static void Menu1(int cantClientes, int reccaudacionTotal, int tipoentrada, int[] precioDia)
     {
         DateTime fechainscripcion = DateTime.Today;
         int totalabonado=IngresarEntero("Ingrese lo que tenga que pagar");
@@ -70,23 +73,23 @@ class Program
         cantClientes++;
         if (tipoentrada==1)
         {
-            Pago(totalabonado,15000);
-            reccaudacionTotal= reccaudacionTotal+15000;
+            Pago(totalabonado,precioDia[tipoentrada]);
+            reccaudacionTotal= reccaudacionTotal+precioDia[tipoentrada];
         }
         else if (tipoentrada==2)
         {
-            Pago(totalabonado,30000);
-            reccaudacionTotal= reccaudacionTotal+30000;
+            Pago(totalabonado,precioDia[tipoentrada]);
+            reccaudacionTotal= reccaudacionTotal+precioDia[tipoentrada];
         }
         else if (tipoentrada==3)
         {
-            Pago(totalabonado,10000);
-            reccaudacionTotal= reccaudacionTotal+10000;
+            Pago(totalabonado,precioDia[tipoentrada]);
+            reccaudacionTotal= reccaudacionTotal+precioDia[tipoentrada];
         }
         else if (tipoentrada==4)
         {
-            Pago(totalabonado,40000);
-            reccaudacionTotal= reccaudacionTotal+40000;
+            Pago(totalabonado,precioDia[tipoentrada]);
+            reccaudacionTotal= reccaudacionTotal+precioDia[tipoentrada];
         }
     }
     static void Menu2()
@@ -135,9 +138,27 @@ class Program
         int IDBuscar=IngresarEntero("Ingrese el ID del cliente que quiera buscar su informacion");
         Console.WriteLine(Registro[IDBuscar]);
     }
-    static void Menu4()
+    static void Menu4(string frase1,string frase2, int [] precioDia, int menu)
     {
-
+        int buscarID=IngresarEntero("Ingrese su ID para buscar su informacion");
+        int nuevoTE=IngresarEntero("Ingrese su nuevo tipo de entrada. Recuerde que "+frase1);
+        int newAbono=IngresarEntero("Ingrese "+precioDia[2]+" si desea ir el dia 1. Ingrese "+precioDia[3]+" si desea ir el dia 2. Ingrese "+precioDia[4]+" si desea el FullPass ");
+        foreach (int ID in Registro.Keys)
+    {
+        if (ID==buscarID /*&& Registro[ID].TipoEntrada!=nuevoTE && newAbono>Registro[ID].TotalAbonado*/)
+        {
+            if (Registro[ID].CambiarEntrada(nuevoTE,newAbono)==true)
+            {
+            Registro[ID].TipoEntrada=nuevoTE;
+            Registro[ID].TotalAbonado= newAbono;
+            DateTime fecha=DateTime.Today;
+            Registro[ID].FechaInscripcion= fecha;
+            }
+            else{
+                menu=IngresarEntero("Oh no. No se ha podido hacer el cambio. "+frase2);
+            }
+        }
+    }
     }
     static void Menu5()
     {

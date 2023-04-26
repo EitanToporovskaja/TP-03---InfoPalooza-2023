@@ -13,4 +13,15 @@ class Cliente {
         Apellido=apellido;
         Nombre=nom;
     }
+    public bool CambiarEntrada(int tipoentrada, double totalabonado)
+    {
+        bool bo=false;
+        if (tipoentrada!=TipoEntrada && totalabonado>TotalAbonado)
+        {
+            return bo = true;
+        }
+        else{
+            return false;
+        }
+    }
 }
